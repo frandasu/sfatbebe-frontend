@@ -98,13 +98,14 @@
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+  <script src="/config.js"></script>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="bar">
       <div class="logo">sfat<b>bebe</b></div>
-      <nav><a href="#">Ghiduri</a><a href="#">Cum funcționează</a></nav>
+      <nav><a href="/ghiduri">Ghiduri</a></nav>
     </div>
   </header>
 
@@ -140,7 +141,7 @@
 
 <script>
   // ⚠️ URL-ul API-ului tău de pe Render (fără / la final)
-  const API_URL = "https://sfatbebe-api.onrender.com";
+  const API_URL = (window.SFATBEBE_CONFIG && window.SFATBEBE_CONFIG.API_URL) || "";
   const $=(id)=>document.getElementById(id);
 
   const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
