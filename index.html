@@ -251,7 +251,11 @@
     search();
   });
 
-  search(); // initial load: show recommended strollers
+  // deep-link from guide pages: /?q=... pre-fills and runs the search
+  const params = new URLSearchParams(location.search);
+  const preset = params.get("q");
+  if(preset){ $("q").value = preset; }
+  search(); // initial load (uses preset if present, else recommended)
 </script>
 </body>
 </html>
