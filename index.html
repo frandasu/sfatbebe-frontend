@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sfatbebe — găsește căruciorul potrivit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF7F2; --paper-2:#F3EEE5; --ink:#26231F; --muted:#7C746A;
+    --teal:#2E6F79; --teal-deep:#245861; --sage:#8FA996; --sage-soft:#E4EBE3;
+    --clay:#B45B3F; --line:#E7E0D5; --card:#FFFFFF; --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif; font-size:16px; line-height:1.5}
+  .wrap{max-width:1060px; margin:0 auto; padding:0 20px}
+
+  header{padding:22px 0 8px}
+  .bar{display:flex; align-items:baseline; justify-content:space-between; gap:16px}
+  .logo{font-family:"Fraunces",serif; font-weight:600; font-size:24px; letter-spacing:-.01em}
+  .logo b{color:var(--teal)}
+  nav a{color:var(--muted); text-decoration:none; font-size:15px; margin-left:20px}
+  nav a:hover{color:var(--ink)}
+
+  .hero{padding:44px 0 14px; max-width:640px; margin:0 auto; text-align:center}
+  .hero h1{font-family:"Fraunces",serif; font-weight:500; font-optical-sizing:auto;
+    font-size:clamp(30px,5.2vw,46px); line-height:1.08; letter-spacing:-.015em; margin:0 0 14px}
+  .hero p{font-size:17px; color:var(--muted); margin:0 auto 24px; max-width:48ch}
+
+  .ask{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:8px; display:flex; gap:8px; align-items:flex-end;
+    box-shadow:0 1px 0 rgba(38,35,31,.03), 0 10px 24px -18px rgba(38,35,31,.5)}
+  .ask textarea{flex:1; border:0; outline:0; resize:none; background:transparent;
+    font-family:inherit; font-size:16.5px; color:var(--ink); padding:12px; height:52px; line-height:1.4}
+  .ask textarea::placeholder{color:#A79E92}
+  .ask button{border:0; cursor:pointer; background:var(--teal); color:#fff; font-family:inherit;
+    font-size:15.5px; font-weight:500; padding:0 22px; height:52px; border-radius:11px;
+    white-space:nowrap; transition:background .15s ease}
+  .ask button:hover{background:var(--teal-deep)}
+  .ask button:disabled{opacity:.6; cursor:default}
+
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin:14px 2px 0; justify-content:center}
+  .chips .lbl{font-size:12px; color:var(--muted); align-self:center}
+  .ex{background:var(--paper-2); border:1px solid var(--line); color:var(--ink);
+    font-size:13.5px; padding:6px 12px; border-radius:999px; cursor:pointer}
+  .ex:hover{border-color:var(--sage); background:var(--sage-soft)}
+
+  .barrow{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    flex-wrap:wrap; margin:26px 2px 6px}
+  .trust{font-size:14px; color:var(--muted)}
+  .trust b{color:var(--teal); font-weight:600}
+  .sort{display:flex; gap:2px; background:var(--paper-2); border:1px solid var(--line);
+    border-radius:999px; padding:3px}
+  .sort button{border:0; background:transparent; cursor:pointer; font-family:inherit;
+    font-size:13px; color:var(--muted); padding:6px 12px; border-radius:999px}
+  .sort button.on{background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(38,35,31,.08)}
+
+  .understood{margin:12px 2px 4px; display:none; align-items:center; flex-wrap:wrap; gap:8px; justify-content:center}
+  .understood .lead{font-size:13.5px; color:var(--muted)}
+  .tag{display:inline-flex; align-items:center; gap:5px; font-size:12.5px;
+    background:var(--sage-soft); color:#3f5a49; border-radius:999px; padding:4px 10px}
+
+  .note{text-align:center; color:var(--muted); font-size:14.5px; margin:28px 0}
+
+  .results{margin:14px 0 40px; display:grid; gap:18px;
+    grid-template-columns:repeat(auto-fill,minmax(232px,1fr))}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; display:flex; flex-direction:column}
+  .thumb{position:relative; aspect-ratio:1/1; background:var(--paper-2)}
+  .thumb img{width:100%; height:100%; object-fit:cover; display:block}
+  .save{position:absolute; top:10px; left:10px; background:var(--clay); color:#fff;
+    font-size:12px; font-weight:600; padding:3px 8px; border-radius:8px}
+  .body{padding:14px; display:flex; flex-direction:column; flex:1}
+  .brand{font-size:12.5px; color:var(--sage); font-weight:600; margin-bottom:3px}
+  .name{font-size:15px; line-height:1.32; margin:0 0 10px; font-weight:500}
+  .pills{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px}
+  .pill{font-size:11.5px; color:var(--muted); background:var(--paper-2); border-radius:7px; padding:3px 8px}
+  .priceline{margin-top:auto; display:flex; align-items:baseline; gap:8px}
+  .price{font-family:"Fraunces",serif; font-weight:600; font-size:22px}
+  .old{font-size:13.5px; color:#B0A899; text-decoration:line-through}
+  .merchant{font-size:12px; color:var(--muted); margin:4px 0 12px}
+  .buy{text-align:center; text-decoration:none; background:var(--teal); color:#fff;
+    font-size:14.5px; font-weight:500; padding:11px; border-radius:10px; transition:background .15s ease}
+  .buy:hover{background:var(--teal-deep)}
+
+  footer{border-top:1px solid var(--line); padding:24px 0 40px; color:var(--muted); font-size:13.5px}
+
+  @media (max-width:560px){
+    .hero{padding-top:28px}
+    .ask{flex-direction:column; align-items:stretch}
+    .ask button{height:46px}
+    .results{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px}
+    .body{padding:11px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="bar">
+      <div class="logo">sfat<b>bebe</b></div>
+      <nav><a href="#">Ghiduri</a><a href="#">Cum funcționează</a></nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Spune-ne de ce cărucior ai nevoie.</h1>
+    <p>Scrie cu cuvintele tale, ca unui prieten. Îți arătăm doar cărucioare pe care le poți cumpăra chiar acum din România, la prețul de azi.</p>
+    <div class="ask">
+      <textarea id="q" placeholder="ex: ușor, pentru tramvai și bloc fără lift, sub 2000 lei, bebe de 6 luni"></textarea>
+      <button id="go">Caută</button>
+    </div>
+    <div class="chips">
+      <span class="lbl">Încearcă:</span>
+      <button class="ex">ușor, pentru oraș</button>
+      <button class="ex">compact pentru avion</button>
+      <button class="ex">de la naștere, pliere cu o mână</button>
+    </div>
+  </section>
+
+  <div class="barrow">
+    <div class="trust" id="trust">Comparăm cărucioare din magazine din România.</div>
+    <div class="sort" id="sort">
+      <button data-sort="recommended" class="on">Recomandate</button>
+      <button data-sort="price">Preț</button>
+    </div>
+  </div>
+
+  <div class="understood" id="understood"></div>
+  <div class="note" id="note"></div>
+  <section class="results" id="results"></section>
+
+  <footer>sfatbebe.ro — te ajutăm să alegi pentru copil, apoi îți arătăm unde găsești la cel mai bun preț. Ordinea „Recomandate” ține cont de potrivire și de ofertă, nu de recenzii.</footer>
+</div>
+
+<script>
+  // ⚠️ URL-ul API-ului tău de pe Render (fără / la final)
+  const API_URL = "https://REPLACE-WITH-YOUR-RENDER-URL.onrender.com";
+  const $=(id)=>document.getElementById(id);
+
+  const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
+  let currentSort="recommended";
+
+  // clean up messy feed titles for display
+  function cleanName(s){
+    if(!s) return "";
+    s=s.replace(/\s*-\s*Default Title\s*$/i,"");
+    s=s.replace(/,?\s*la doar\s*[\d.,]+\s*lei\.?\s*$/i,"");
+    s=s.replace(/\s+[A-Z]{2,}\d{3,}\s*$/,"");        // trailing product code e.g. KID063962
+    s=s.replace(/\s{2,}/g," ").replace(/[,\s]+$/,"").trim();
+    return s;
+  }
+  function ageText(a){
+    if(a.age_min_months==null&&a.age_max_months==null) return null;
+    const lo=a.age_min_months??0, hi=a.age_max_months;
+    return hi? lo+"–"+hi+" luni" : "de la "+(lo===0?"naștere":lo+" luni");
+  }
+  function pills(a){
+    const p=[];
+    if(a.weight_kg) p.push(a.weight_kg+" kg");
+    if(a.fold) p.push(FOLD_RO[a.fold]||a.fold);
+    const ag=ageText(a); if(ag) p.push(ag);
+    if(a.compact&&!a.weight_kg) p.push("compact");
+    return p.slice(0,3);
+  }
+  function money(n){return Number(n).toLocaleString("ro-RO")+" lei";}
+
+  function render(list){
+    const box=$("results"); box.innerHTML="";
+    for(const p of list){
+      const a=p.attributes||{};
+      const off=p.old_price? Math.round((1-p.price/p.old_price)*100):0;
+      const save=off>=5? `<div class="save">-${off}%</div>`:"";
+      const old=p.old_price&&p.old_price>p.price? `<span class="old">${money(p.old_price)}</span>`:"";
+      const buy=p.affiliate_url
+        ? `<a class="buy" href="${p.affiliate_url}" target="_blank" rel="nofollow sponsored">Vezi prețul</a>`
+        : `<span class="buy" style="background:#cbd5e1">Indisponibil</span>`;
+      box.insertAdjacentHTML("beforeend",`
+        <article class="card">
+          <div class="thumb">${save}<img src="${p.image_url||''}" alt="${cleanName(p.name)}" loading="lazy"></div>
+          <div class="body">
+            <div class="brand">${p.brand||''}</div>
+            <h3 class="name">${cleanName(p.name)}</h3>
+            <div class="pills">${pills(a).map(x=>`<span class="pill">${x}</span>`).join("")}</div>
+            <div class="priceline"><span class="price">${money(p.price)}</span>${old}</div>
+            <div class="merchant">la ${p.merchant}</div>
+            ${buy}
+          </div>
+        </article>`);
+    }
+  }
+  function understoodTags(u){
+    const t=[];
+    if(u.max_price) t.push("sub "+money(u.max_price));
+    if(u.age_months!=null) t.push(u.age_months===0?"de la naștere":"bebe "+u.age_months+" luni");
+    if(u.max_weight_kg) t.push("ușor (sub "+u.max_weight_kg+" kg)");
+    if(u.easy_fold) t.push("pliere ușoară");
+    if(u.compact) t.push("compact");
+    return t;
+  }
+  function showUnderstood(u){
+    const el=$("understood"), tags=understoodTags(u||{});
+    if(!tags.length){el.style.display="none"; return;}
+    el.style.display="flex";
+    el.innerHTML=`<span class="lead">Am înțeles:</span>`+tags.map(t=>`<span class="tag">${t}</span>`).join("");
+  }
+
+  async function search(){
+    const text=$("q").value.trim();
+    $("go").disabled=true;
+    $("understood").style.display="none";
+    $("results").innerHTML="";
+    $("note").textContent="Caut... (prima cerere poate dura ~30s dacă serverul a adormit)";
+    try{
+      const res=await fetch(API_URL+"/ask",{
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({text, sort:currentSort})
+      });
+      if(!res.ok) throw new Error("HTTP "+res.status);
+      const data=await res.json();
+      showUnderstood(data.understood);
+      $("trust").innerHTML = data.count+` cărucioare potrivite, toate cumpărabile acum din România.`;
+      if(!data.count){
+        $("note").textContent="Niciun cărucior nu se potrivește. Încearcă să lărgești căutarea (scoate un criteriu sau mărește bugetul).";
+      }else{
+        $("note").textContent="";
+        render(data.products);
+      }
+    }catch(e){
+      $("note").textContent="Nu am putut încărca rezultatele: "+e.message+". Verifică API_URL și că serverul e pornit.";
+    }finally{
+      $("go").disabled=false;
+    }
+  }
+
+  $("go").addEventListener("click",search);
+  $("q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();search();}});
+  document.querySelectorAll(".ex").forEach(el=>el.addEventListener("click",()=>{$("q").value=el.textContent;search();}));
+  $("sort").addEventListener("click",e=>{
+    const b=e.target.closest("button[data-sort]"); if(!b) return;
+    currentSort=b.dataset.sort;
+    document.querySelectorAll("#sort button").forEach(x=>x.classList.toggle("on",x===b));
+    search();
+  });
+
+  search(); // initial load: show recommended strollers
+</script>
+</body>
+</html>
