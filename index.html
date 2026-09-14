@@ -31,10 +31,11 @@
   .hero p{font-size:17px; color:var(--muted); margin:0 auto 24px; max-width:48ch}
 
   .ask{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    padding:8px; display:flex; gap:8px; align-items:flex-end;
+    padding:8px; display:flex; gap:8px; align-items:flex-start;
     box-shadow:0 1px 0 rgba(38,35,31,.03), 0 10px 24px -18px rgba(38,35,31,.5)}
   .ask textarea{flex:1; border:0; outline:0; resize:none; background:transparent;
-    font-family:inherit; font-size:16.5px; color:var(--ink); padding:12px; height:52px; line-height:1.4}
+    font-family:inherit; font-size:16.5px; color:var(--ink); padding:12px; line-height:1.4;
+    min-height:calc(1.4em + 24px); max-height:calc(6 * 1.4em + 24px); overflow-y:auto}
   .ask textarea::placeholder{color:#A79E92}
   .ask button{border:0; cursor:pointer; background:var(--teal); color:#fff; font-family:inherit;
     font-size:15.5px; font-weight:500; padding:0 22px; height:52px; border-radius:11px;
@@ -144,6 +145,12 @@
   const API_URL = (window.SFATBEBE_CONFIG && window.SFATBEBE_CONFIG.API_URL) || "";
   const $=(id)=>document.getElementById(id);
 
+  // auto-grow the textarea with its content (no scrollbar until max-height)
+  function autoGrow(el){
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  }
+
   const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
   let currentSort="recommended";
 
@@ -242,9 +249,10 @@
     }
   }
 
+  $("q").addEventListener("input", (e)=>autoGrow(e.target));
   $("go").addEventListener("click",search);
   $("q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();search();}});
-  document.querySelectorAll(".ex").forEach(el=>el.addEventListener("click",()=>{$("q").value=el.textContent;search();}));
+  document.querySelectorAll(".ex").forEach(el=>el.addEventListener("click",()=>{$("q").value=el.textContent;autoGrow($("q"));search();}));
   $("sort").addEventListener("click",e=>{
     const b=e.target.closest("button[data-sort]"); if(!b) return;
     currentSort=b.dataset.sort;
@@ -255,7 +263,7 @@
   // deep-link from guide pages: /?q=... pre-fills and runs the search
   const params = new URLSearchParams(location.search);
   const preset = params.get("q");
-  if(preset){ $("q").value = preset; }
+  if(preset){ $("q").value = preset; autoGrow($("q")); }
   search(); // initial load (uses preset if present, else recommended)
 </script>
 </body>
