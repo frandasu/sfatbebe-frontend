@@ -89,6 +89,17 @@
     font-size:14.5px; font-weight:500; padding:11px; border-radius:10px; transition:background .15s ease}
   .buy:hover{background:var(--teal-deep)}
 
+  .feedback{margin:6px 2px 40px; text-align:center; color:var(--muted); font-size:14px}
+  .feedback .fb-btns{display:inline-flex; gap:8px; margin-left:8px; vertical-align:middle}
+  .feedback .fb-btns button{border:1px solid var(--line); background:var(--card); color:var(--ink);
+    border-radius:999px; padding:5px 14px; font-size:13.5px; cursor:pointer; font-family:inherit}
+  .feedback .fb-btns button:hover{border-color:var(--sage); background:var(--sage-soft)}
+  .feedback textarea{display:block; width:100%; max-width:460px; margin:10px auto 0; border:1px solid var(--line);
+    border-radius:10px; padding:10px; font-family:inherit; font-size:14px; resize:vertical; min-height:58px}
+  .feedback .fb-send{margin-top:8px; background:var(--teal); color:#fff; border:0; border-radius:10px;
+    padding:8px 18px; font-size:14px; cursor:pointer; font-family:inherit}
+  .feedback .fb-send:hover{background:var(--teal-deep)}
+  .feedback .fb-thanks{color:var(--sage)}
   footer{border-top:1px solid var(--line); padding:24px 0 40px; color:var(--muted); font-size:13.5px}
   footer p{margin:0 0 6px}
   footer a{color:var(--muted); text-decoration:underline}
@@ -140,6 +151,7 @@
   <div class="understood" id="understood"></div>
   <div class="note" id="note"></div>
   <section class="results" id="results"></section>
+  <div class="feedback" id="feedback"></div>
 
   <footer>
     <p>sfatbebe.ro conține linkuri de afiliere: putem primi un comision când cumperi prin ele, fără cost suplimentar pentru tine. Ordinea „Recomandate” ține cont de potrivire și de ofertă, nu de recenzii.</p>
@@ -161,6 +173,7 @@
 
   const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
   let currentSort="recommended";
+  let lastQuery="", lastUnderstood=null, lastCount=0;
 
   // clean up messy feed titles for display
   function cleanName(s){
@@ -238,11 +251,35 @@
     el.innerHTML=`<span class="lead">Am înțeles:</span>`+tags.map(t=>`<span class="tag">${t}</span>`).join("");
   }
 
+  function renderFeedback(){
+    const fb=$("feedback");
+    fb.innerHTML = `Rezultatele se potrivesc cu ce cauți?<span class="fb-btns">`+
+      `<button data-v="da">Da</button><button data-v="partial">Parțial</button><button data-v="nu">Nu</button></span>`;
+    fb.querySelectorAll("button[data-v]").forEach(b=>b.addEventListener("click",()=>onVerdict(b.dataset.v)));
+  }
+  function onVerdict(v){
+    if(v==="nu"){
+      const fb=$("feedback");
+      fb.innerHTML = `<div>Ce căutai, de fapt? (opțional)</div>`+
+        `<textarea id="fb-comment" placeholder="ex: voiam ceva pentru teren, mi-a dat cărucioare de oraș"></textarea>`+
+        `<button class="fb-send" id="fb-send">Trimite</button>`;
+      $("fb-send").addEventListener("click",()=>{ sendFeedback("nu", $("fb-comment").value.trim()); fbThanks(); });
+    } else { sendFeedback(v,""); fbThanks(); }
+  }
+  function fbThanks(){ $("feedback").innerHTML = `<span class="fb-thanks">Mulțumim! Ne ajută să îmbunătățim.</span>`; }
+  async function sendFeedback(verdict, comment){
+    try{
+      await fetch(API_URL+"/feedback",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({query:lastQuery, understood:lastUnderstood, verdict, comment, result_count:lastCount})});
+    }catch(e){}
+  }
+
   async function search(){
     const text=$("q").value.trim();
     $("go").disabled=true;
     $("understood").style.display="none";
     $("results").innerHTML="";
+    $("feedback").innerHTML="";
     $("note").textContent="Caut... (prima cerere poate dura ~30s dacă serverul a adormit)";
     try{
       const res=await fetch(API_URL+"/ask",{
@@ -259,6 +296,8 @@
         $("note").textContent="";
         render(data.products);
       }
+      lastQuery=text; lastUnderstood=data.understood||{}; lastCount=data.count;
+      if(text){ renderFeedback(); }
     }catch(e){
       $("note").textContent="Nu am putut încărca rezultatele: "+e.message+". Verifică API_URL și că serverul e pornit.";
     }finally{
