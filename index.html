@@ -31,15 +31,15 @@
   .hero p{font-size:17px; color:var(--muted); margin:0 auto 24px; max-width:48ch}
 
   .ask{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    padding:8px; display:flex; gap:8px; align-items:flex-start;
+    padding:8px; display:flex; gap:8px; align-items:center;
     box-shadow:0 1px 0 rgba(38,35,31,.03), 0 10px 24px -18px rgba(38,35,31,.5)}
   .ask textarea{flex:1; border:0; outline:0; resize:none; background:transparent;
     font-family:inherit; font-size:16.5px; color:var(--ink); padding:12px; line-height:1.4;
     min-height:calc(1.4em + 24px); max-height:calc(6 * 1.4em + 24px); overflow-y:auto}
   .ask textarea::placeholder{color:#A79E92}
   .ask button{border:0; cursor:pointer; background:var(--teal); color:#fff; font-family:inherit;
-    font-size:15.5px; font-weight:500; padding:0 22px; height:52px; border-radius:11px;
-    white-space:nowrap; transition:background .15s ease}
+    font-size:15.5px; font-weight:500; padding:0 22px; height:44px; border-radius:11px;
+    white-space:nowrap; align-self:center; flex:0 0 auto; transition:background .15s ease}
   .ask button:hover{background:var(--teal-deep)}
   .ask button:disabled{opacity:.6; cursor:default}
 
