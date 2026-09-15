@@ -136,13 +136,14 @@
       <span class="lbl">Încearcă:</span>
       <button class="ex">cărucior ușor pentru oraș</button>
       <button class="ex">landou pentru nou-născut</button>
+      <button class="ex">scaun auto pentru bebe de 6 luni</button>
       <button class="ex">sac de iarnă pentru cărucior</button>
     </div>
   </section>
 
   <div class="barrow">
     <div class="trust" id="trust">Găsește ce ai nevoie pentru copil, din magazine din România.</div>
-    <div class="sort" id="sort">
+    <div class="sort" id="sort" style="display:none">
       <button data-sort="recommended" class="on">Recomandate</button>
       <button data-sort="price">Preț</button>
     </div>
@@ -172,7 +173,8 @@
   }
 
   const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
-  const CAT_WORD={carucioare:"cărucioare",accesorii:"accesorii"};
+  const CAT_WORD={carucioare:"cărucioare","scaune-auto":"scaune auto",accesorii:"accesorii"};
+  const SEAT_RO={scoica:"scoică",scaun:"scaun auto",inaltator:"înălțător"};
   function catWord(u){ return (u && CAT_WORD[u.category]) || "produse"; }
   let currentSort="recommended";
   let lastQuery="", lastUnderstood=null, lastCount=0;
@@ -200,10 +202,11 @@
 
   function pills(a){
     const p=[];
+    if(a.seat_type) p.push(SEAT_RO[a.seat_type]||a.seat_type);
     if(a.weight_kg) p.push(a.weight_kg+" kg");
     if(a.fold) p.push(FOLD_RO[a.fold]||a.fold);
     const ag=ageText(a); if(ag) p.push(ag);
-    if(a.compact&&!a.weight_kg) p.push("compact");
+    if(a.compact&&!a.weight_kg&&!a.seat_type) p.push("compact");
     return p.slice(0,3);
   }
   function money(n){return Number(n).toLocaleString("ro-RO")+" lei";}
@@ -299,7 +302,7 @@
         render(data.products);
       }
       lastQuery=text; lastUnderstood=data.understood||{}; lastCount=data.count;
-      if(text){ renderFeedback(); }
+      if(text){ $("sort").style.display="flex"; renderFeedback(); }
     }catch(e){
       $("note").textContent="Nu am putut încărca rezultatele: "+e.message+". Verifică API_URL și că serverul e pornit.";
     }finally{
@@ -313,6 +316,7 @@
   document.querySelectorAll(".ex").forEach(el=>el.addEventListener("click",()=>{$("q").value=el.textContent;autoGrow($("q"));search();}));
   $("sort").addEventListener("click",e=>{
     const b=e.target.closest("button[data-sort]"); if(!b) return;
+    if(!lastQuery) return;              // nothing searched yet -> ignore
     currentSort=b.dataset.sort;
     document.querySelectorAll("#sort button").forEach(x=>x.classList.toggle("on",x===b));
     search();
