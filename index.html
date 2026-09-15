@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>sfatbebe — găsește căruciorul potrivit</title>
+<title>sfatbebe — găsește ce ai nevoie pentru copil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -126,22 +126,22 @@
   </header>
 
   <section class="hero">
-    <h1>Spune-ne de ce cărucior ai nevoie.</h1>
-    <p>Scrie cu cuvintele tale, ca unui prieten. Îți arătăm doar cărucioare pe care le poți cumpăra chiar acum din România, la prețul de azi.</p>
+    <h1>Spune-ne de ce ai nevoie pentru copil.</h1>
+    <p>Scrie cu cuvintele tale, ca unui prieten. Îți arătăm doar produse pe care le poți cumpăra chiar acum din România, la prețul de azi.</p>
     <div class="ask">
-      <textarea id="q" placeholder="ex: ușor, pentru tramvai și bloc fără lift, sub 2000 lei, bebe de 6 luni"></textarea>
+      <textarea id="q" placeholder="ex: cărucior ușor pentru tramvai, sub 2000 lei — sau o pelerină de ploaie"></textarea>
       <button id="go">Caută</button>
     </div>
     <div class="chips">
       <span class="lbl">Încearcă:</span>
-      <button class="ex">ușor, pentru oraș</button>
-      <button class="ex">compact pentru avion</button>
-      <button class="ex">de la naștere, pliere cu o mână</button>
+      <button class="ex">cărucior ușor pentru oraș</button>
+      <button class="ex">landou pentru nou-născut</button>
+      <button class="ex">sac de iarnă pentru cărucior</button>
     </div>
   </section>
 
   <div class="barrow">
-    <div class="trust" id="trust">Comparăm cărucioare din magazine din România.</div>
+    <div class="trust" id="trust">Găsește ce ai nevoie pentru copil, din magazine din România.</div>
     <div class="sort" id="sort">
       <button data-sort="recommended" class="on">Recomandate</button>
       <button data-sort="price">Preț</button>
@@ -172,6 +172,8 @@
   }
 
   const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
+  const CAT_WORD={carucioare:"cărucioare",accesorii:"accesorii"};
+  function catWord(u){ return (u && CAT_WORD[u.category]) || "produse"; }
   let currentSort="recommended";
   let lastQuery="", lastUnderstood=null, lastCount=0;
 
@@ -289,9 +291,9 @@
       if(!res.ok) throw new Error("HTTP "+res.status);
       const data=await res.json();
       showUnderstood(data.understood);
-      $("trust").innerHTML = data.count+` modele de cărucioare potrivite, toate cumpărabile acum din România.`;
+      $("trust").innerHTML = data.count+" "+catWord(data.understood)+" potrivite, toate cumpărabile acum din România.";
       if(!data.count){
-        $("note").textContent="Niciun cărucior nu se potrivește. Încearcă să lărgești căutarea (scoate un criteriu sau mărește bugetul).";
+        $("note").textContent="Nimic nu se potrivește. Încearcă să lărgești căutarea (scoate un criteriu sau mărește bugetul).";
       }else{
         $("note").textContent="";
         render(data.products);
