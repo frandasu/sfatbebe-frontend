@@ -126,7 +126,7 @@
   </header>
 
   <section class="hero">
-    <h1>Spune-ne de ce ai nevoie pentru copil.</h1>
+    <h1>Spune-ne de ce ai nevoie pentru copilul tău.</h1>
     <p>Scrie cu cuvintele tale, ca unui prieten. Îți arătăm doar produse pe care le poți cumpăra chiar acum din România, la prețul de azi.</p>
     <div class="ask">
       <textarea id="q" placeholder="ex: cărucior ușor pentru tramvai, sub 2000 lei — sau o pelerină de ploaie"></textarea>
@@ -318,11 +318,12 @@
     search();
   });
 
-  // deep-link from guide pages: /?q=... pre-fills and runs the search
+  // deep-link from guide pages: /?q=... pre-fills and runs the search.
+  // Otherwise start with a clean page and let the parent type first.
   const params = new URLSearchParams(location.search);
   const preset = params.get("q");
-  if(preset){ $("q").value = preset; autoGrow($("q")); }
-  search(); // initial load (uses preset if present, else recommended)
+  if(preset){ $("q").value = preset; autoGrow($("q")); search(); }
+  $("q").focus();
 </script>
 </body>
 </html>
