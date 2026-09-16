@@ -175,6 +175,7 @@
   const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
   const CAT_WORD={carucioare:"cărucioare","scaune-auto":"scaune auto",accesorii:"accesorii"};
   const SEAT_RO={scoica:"scoică",scaun:"scaun auto",inaltator:"înălțător"};
+  const SAFETY_RO={r129:"i-Size (R129)",r44:"R44"};
   function catWord(u){ return (u && CAT_WORD[u.category]) || "produse"; }
   let currentSort="recommended";
   let lastQuery="", lastUnderstood=null, lastCount=0;
@@ -203,6 +204,7 @@
   function pills(a){
     const p=[];
     if(a.seat_type) p.push(SEAT_RO[a.seat_type]||a.seat_type);
+    if(a.safety) p.push(SAFETY_RO[a.safety]||a.safety);
     if(a.weight_kg) p.push(a.weight_kg+" kg");
     if(a.fold) p.push(FOLD_RO[a.fold]||a.fold);
     const ag=ageText(a); if(ag) p.push(ag);
