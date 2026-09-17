@@ -324,7 +324,9 @@
     if(!list || !list.length) return "";
     const shown = list.slice(0,3).map(x=>x.toLowerCase());
     const rest = list.length - shown.length;
-    return rest>0 ? shown.join(", ")+" și încă "+rest : shown.join(", ");
+    // "și încă 1" reads like a typo; one more colour is "încă una" (culoare is feminine)
+    if(!rest) return shown.join(", ");
+    return shown.join(", ")+(rest===1 ? " și încă una" : " și încă "+rest);
   }
 
   function pills(a){
