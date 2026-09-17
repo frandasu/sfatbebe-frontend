@@ -154,6 +154,7 @@
       <button class="ex">scaun auto pentru bebe de 6 luni</button>
       <button class="ex">pătuț co-sleeper</button>
       <button class="ex">scaun de masă pliabil</button>
+      <button class="ex">marsupiu ergonomic de la naștere</button>
       <button class="ex">sac de iarnă pentru cărucior</button>
     </div>
   </section>
@@ -190,11 +191,12 @@
   }
 
   const FOLD_RO={one_hand:"pliere cu o mână",auto:"pliere automată",umbrella:"pliere umbrelă",book:"pliere tip carte",foldable:"pliabil"};
-  const CAT_WORD={carucioare:"cărucioare","scaune-auto":"scaune auto",patuturi:"pătuțuri","scaune-masa":"scaune de masă",accesorii:"accesorii"};
+  const CAT_WORD={carucioare:"cărucioare","scaune-auto":"scaune auto",patuturi:"pătuțuri","scaune-masa":"scaune de masă",marsupii:"marsupii",accesorii:"accesorii"};
   const SEAT_RO={scoica:"scoică",scaun:"scaun auto",inaltator:"înălțător"};
   const SAFETY_RO={r129:"i-Size (R129)",r44:"R44"};
   const CRIB_RO={"co-sleeper":"co-sleeper",pliabil:"pliabil",transformabil:"transformabil",lemn:"din lemn"};
   const CHAIR_RO={clasic:"scaun de masă",evolutiv:"evolutiv",inaltator:"înălțător",prindere_masa:"prindere la masă"};
+  const CARRIER_RO={marsupiu:"marsupiu",sling:"sling",wrap:"wrap",hipseat:"scaun de șold",rucsac:"rucsac de purtare"};
   function catWord(u){ return (u && CAT_WORD[u.category]) || "produse"; }
   let currentSort="recommended";
   let lastQuery="", lastUnderstood=null, lastCount=0;
@@ -227,6 +229,8 @@
     if(a.crib_type) p.push(CRIB_RO[a.crib_type]||a.crib_type);
     if(a.crib_size) p.push(a.crib_size+" cm");
     if(a.chair_type) p.push(CHAIR_RO[a.chair_type]||a.chair_type);
+    if(a.carrier_type) p.push(CARRIER_RO[a.carrier_type]||a.carrier_type);
+    if(a.ergonomic) p.push("ergonomic");
     if(a.weight_kg) p.push(a.weight_kg+" kg");
     if(a.fold) p.push(FOLD_RO[a.fold]||a.fold);
     const ag=ageText(a); if(ag) p.push(ag);
