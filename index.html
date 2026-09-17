@@ -120,6 +120,90 @@
   footer a{color:var(--muted); text-decoration:underline}
   footer a:hover{color:var(--ink)}
 
+  /* --- product comparison --------------------------------------------- */
+  .cmp-check{position:absolute; top:8px; right:8px; z-index:1; display:inline-flex;
+    align-items:center; gap:5px; background:rgba(255,255,255,.94); border:1px solid var(--line);
+    border-radius:999px; padding:4px 9px 4px 7px; font-size:11.5px; color:var(--muted);
+    cursor:pointer; user-select:none; line-height:1}
+  .cmp-check:hover{border-color:var(--sage); color:var(--ink)}
+  .cmp-check input{margin:0; width:13px; height:13px; accent-color:var(--teal); cursor:pointer}
+  .card:has(.cmp-check input:checked){border-color:var(--sage); box-shadow:0 0 0 2px var(--sage-soft)}
+
+  .cmp-bar{position:fixed; left:0; right:0; bottom:0; z-index:40; background:var(--card);
+    border-top:1px solid var(--line); box-shadow:0 -8px 24px -18px rgba(38,35,31,.6);
+    padding:10px 20px calc(10px + env(safe-area-inset-bottom));
+    display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap}
+  .cmp-bar[hidden]{display:none}
+  body.cmp-on{padding-bottom:84px}   /* fallback; the real value is measured in cmpSync */
+  .cmp-bar .cmp-count{font-size:14.5px; font-weight:500}
+  .cmp-bar .cmp-open{border:0; cursor:pointer; background:var(--teal); color:#fff;
+    font-family:inherit; font-size:14.5px; font-weight:500; padding:10px 20px; border-radius:10px;
+    transition:background .15s ease}
+  .cmp-bar .cmp-open:hover{background:var(--teal-deep)}
+  .cmp-bar .cmp-clear{border:0; background:transparent; color:var(--muted); cursor:pointer;
+    font-family:inherit; font-size:13.5px; text-decoration:underline; padding:6px}
+  .cmp-bar .cmp-msg{flex-basis:100%; text-align:center; font-size:13px; color:var(--clay)}
+
+  .cmp-overlay{position:fixed; inset:0; z-index:50; background:rgba(38,35,31,.45);
+    display:flex; align-items:center; justify-content:center; padding:16px}
+  .cmp-overlay[hidden]{display:none}
+  .cmp-panel{background:var(--paper); border-radius:var(--radius); width:min(980px,100%);
+    max-height:92vh; display:flex; flex-direction:column; overflow:hidden;
+    box-shadow:0 24px 60px -24px rgba(38,35,31,.6)}
+  .cmp-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:14px 16px; border-bottom:1px solid var(--line); background:var(--card)}
+  .cmp-head h2{font-family:"Fraunces",serif; font-weight:500; font-size:20px; margin:0}
+  .cmp-close{border:1px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer;
+    font-family:inherit; font-size:20px; line-height:1; width:34px; height:34px; border-radius:999px}
+  .cmp-close:hover{border-color:var(--sage); background:var(--sage-soft)}
+  /* the scroll lives HERE, so four columns never push the page sideways */
+  .cmp-scroll{flex:1 1 auto; min-height:0; overflow:auto; -webkit-overflow-scrolling:touch}
+  .cmp-table{border-collapse:separate; border-spacing:0; width:100%}
+  .cmp-table th,.cmp-table td{border-bottom:1px solid var(--line); vertical-align:top; text-align:left}
+  .cmp-table td{padding:10px 12px; font-size:14px; min-width:158px}
+  /* the label column stays put, so you always know which row you are reading */
+  .cmp-table .rowlab{position:sticky; left:0; z-index:2; background:var(--paper-2);
+    padding:10px 12px; font-size:12.5px; font-weight:500; color:var(--muted);
+    min-width:106px; width:106px; border-right:1px solid var(--line)}
+  .cmp-table thead th.rowlab{z-index:3; min-width:106px; width:106px;
+    background:var(--paper-2); padding:10px 12px}
+  .cmp-table thead th{position:sticky; top:0; z-index:1; background:var(--card); padding:12px;
+    font-weight:400; min-width:158px; height:0}   /* height:0 lets the inner column stretch */
+  /* one flex column per product, so the buy buttons line up across columns even
+     when only some products carry an old price */
+  .cmp-col{display:flex; flex-direction:column; height:100%}
+  .cmp-col .cmp-col-buy{margin-top:auto}
+  .cmp-col-img{width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:10px;
+    background:var(--paper-2); display:block; margin-bottom:8px}
+  .cmp-col-brand{font-size:12px; color:var(--sage); font-weight:600}
+  .cmp-col-name{font-size:13.5px; font-weight:500; line-height:1.3; margin:2px 0 8px;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+  .cmp-col-price{white-space:nowrap}
+  .cmp-col-was{display:block; margin-top:2px}
+  .cmp-col-price{font-family:"Fraunces",serif; font-weight:600; font-size:19px}
+  .cmp-price-old,.cmp-off{white-space:nowrap}
+  .cmp-col-buy{display:block; text-align:center; text-decoration:none; background:var(--teal);
+    color:#fff; font-size:13.5px; font-weight:500; padding:9px; border-radius:9px; margin-top:8px;
+    transition:background .15s ease}
+  .cmp-col-buy:hover{background:var(--teal-deep)}
+  .cmp-col-drop{border:0; background:transparent; color:var(--muted); cursor:pointer;
+    font-family:inherit; font-size:12px; text-decoration:underline; margin-top:6px; padding:2px}
+  .cmp-na{color:#B0A899}
+  .cmp-price-old{font-size:12.5px; color:#B0A899; text-decoration:line-through; margin-left:6px}
+  .cmp-off{color:var(--clay); font-size:12.5px; font-weight:600; margin-left:6px}
+
+  @media (max-width:560px){
+    .cmp-overlay{padding:0}
+    .cmp-panel{max-height:100vh; height:100%; width:100%; border-radius:0}
+    .cmp-table td,.cmp-table thead th{min-width:146px}
+    /* a square thumbnail at column width ate a third of the screen */
+    .cmp-col-img{aspect-ratio:auto; height:96px}
+    .cmp-col-name{-webkit-line-clamp:2}
+    .cmp-table .rowlab{min-width:92px; width:92px; font-size:12px; padding:10px 8px}
+    .cmp-check{font-size:11px; padding:3px 8px 3px 6px}
+    .cmp-table thead th.rowlab{min-width:92px; width:92px; padding:10px 8px}
+  }
+
   @media (max-width:560px){
     .hero{padding-top:28px}
     .ask{flex-direction:column; align-items:stretch}
@@ -127,7 +211,7 @@
     .results{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px}
     .body{padding:11px}
   }
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
 </style>
   <script src="/config.js"></script>
 </head>
@@ -177,6 +261,23 @@
     <p><a href="/ghiduri">Ghiduri</a> &nbsp; <a href="/cum-functioneaza">Cum funcționează</a> &nbsp; <a href="/termeni">Termeni</a> &nbsp; <a href="/confidentialitate">Confidențialitate</a></p>
     <p>© 2026 sfatbebe.ro</p>
   </footer>
+</div>
+
+<div class="cmp-bar" id="cmpbar" hidden>
+  <span class="cmp-count" id="cmpcount"></span>
+  <button class="cmp-open" id="cmpopen">Deschide comparația</button>
+  <button class="cmp-clear" id="cmpclear">Golește selecția</button>
+  <div class="cmp-msg" id="cmpmsg" hidden></div>
+</div>
+
+<div class="cmp-overlay" id="cmpoverlay" hidden>
+  <div class="cmp-panel" role="dialog" aria-modal="true" aria-labelledby="cmptitle" id="cmppanel">
+    <div class="cmp-head">
+      <h2 id="cmptitle">Comparație</h2>
+      <button class="cmp-close" id="cmpclose" aria-label="Închide comparația">&times;</button>
+    </div>
+    <div class="cmp-scroll" id="cmpscroll"></div>
+  </div>
 </div>
 
 <script>
@@ -241,9 +342,140 @@
     return p.slice(0,3);
   }
   function money(n){return Number(n).toLocaleString("ro-RO")+" lei";}
+  // feed text goes into markup, so escape it (a name may carry a quote)
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,
+    c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+  /* --- product comparison ----------------------------------------------
+     Selection lives in plain JS state (no storage), keyed by product id, and
+     carries the category it was picked under so the table knows which rows to
+     show. Up to CMP_MAX products; the panel is built fresh on each open. */
+  const CMP_MAX=4;
+  const cmpSel=new Map();          // id -> {p, cat}
+  let lastById=new Map();          // id -> product, from the last render
+  let cmpLastFocus=null, cmpMsgTimer=null;
+
+  const ACC_RO={husa_ploaie:"husă de ploaie",sac_iarna:"sac de iarnă",plasa_tantari:"plasă de țânțari",
+    parasolar:"parasolar",geanta:"geantă",suport:"suport",manusi:"mănuși",prindere:"prindere",
+    protectie:"protecție"};
+  function heightText(a){
+    const lo=a.height_min_cm, hi=a.height_max_cm;
+    if(lo!=null&&hi!=null) return lo+"–"+hi+" cm";
+    if(lo!=null) return "de la "+lo+" cm";
+    if(hi!=null) return "până la "+hi+" cm";
+    return null;
+  }
+  const yes=v=>v?"Da":null;
+
+  // Rows per category: only what that category actually describes. Each reads the
+  // product's own attributes; a value we don't have prints a quiet dash.
+  const CMP_ROWS={
+    carucioare:[["Greutate",a=>a.weight_kg?a.weight_kg+" kg":null],
+                ["Pliere",a=>a.fold?(FOLD_RO[a.fold]||a.fold):null],
+                ["Vârstă",a=>ageText(a)],
+                ["Compact",a=>yes(a.compact)]],
+    "scaune-auto":[["Tip",a=>a.seat_type?(SEAT_RO[a.seat_type]||a.seat_type):null],
+                ["Înălțime",a=>heightText(a)],
+                ["Siguranță",a=>a.safety?(SAFETY_RO[a.safety]||a.safety):null],
+                ["Isofix",a=>yes(a.isofix)]],
+    patuturi:[["Tip",a=>a.crib_type?(CRIB_RO[a.crib_type]||a.crib_type):null],
+                ["Dimensiune",a=>a.crib_size?a.crib_size+" cm":null]],
+    "scaune-masa":[["Tip",a=>a.chair_type?(CHAIR_RO[a.chair_type]||a.chair_type):null],
+                ["Ham în 5 puncte",a=>yes(a.harness)],
+                ["Spătar rabatabil",a=>yes(a.recline)],
+                ["Înălțime reglabilă",a=>a.height_positions?a.height_positions+" poziții":null],
+                ["Tăviță detașabilă",a=>yes(a.tray_removable)],
+                ["Vârstă",a=>ageText(a)]],
+    marsupii:[["Tip",a=>a.carrier_type?(CARRIER_RO[a.carrier_type]||a.carrier_type):null],
+                ["Poziție ergonomică",a=>yes(a.ergonomic)],
+                ["De la naștere",a=>yes(a.newborn_ready)],
+                ["Poziții de purtare",a=>a.carry_positions?String(a.carry_positions):null],
+                ["Greutate maximă",a=>a.max_load_kg?a.max_load_kg+" kg":null]],
+    accesorii:[["Tip",a=>a.acc_type?(ACC_RO[a.acc_type]||a.acc_type):null]],
+  };
+  // a name search can return mixed categories; then fall back to what any product may have
+  const CMP_GENERIC=[["Tip",a=>SEAT_RO[a.seat_type]||CRIB_RO[a.crib_type]||CHAIR_RO[a.chair_type]
+                              ||CARRIER_RO[a.carrier_type]||ACC_RO[a.acc_type]||null],
+                     ["Vârstă",a=>ageText(a)],
+                     ["Greutate",a=>a.weight_kg?a.weight_kg+" kg":null]];
+
+  function cmpSync(){
+    const n=cmpSel.size;
+    const bar=$("cmpbar");
+    bar.hidden = n<2;
+    document.body.classList.toggle("cmp-on", n>=2);
+    // the bar wraps to two lines on a narrow screen, so reserve what it actually
+    // takes rather than a guessed number that leaves the last card half covered
+    document.body.style.paddingBottom = n>=2 ? (bar.offsetHeight+16)+"px" : "";
+    $("cmpcount").textContent = "Compară ("+n+")";
+  }
+  function cmpMsg(text){
+    const el=$("cmpmsg"); el.textContent=text; el.hidden=false;
+    clearTimeout(cmpMsgTimer); cmpMsgTimer=setTimeout(()=>{el.hidden=true;},3500);
+  }
+  function cmpClear(){
+    cmpSel.clear();
+    document.querySelectorAll("#results input[data-cmp]").forEach(cb=>{cb.checked=false;});
+    if(!$("cmpoverlay").hidden) cmpClose();
+    cmpSync();
+  }
+  function cmpDrop(id){
+    cmpSel.delete(id);
+    const cb=document.querySelector('#results input[data-cmp="'+id+'"]');
+    if(cb) cb.checked=false;
+    cmpSync();
+    if(cmpSel.size<2) cmpClose(); else cmpBuild();
+  }
+
+  function cmpBuild(){
+    const items=[...cmpSel.values()];
+    const cats=new Set(items.map(x=>x.cat).filter(Boolean));
+    const rows=(cats.size===1 && CMP_ROWS[[...cats][0]]) || CMP_GENERIC;
+    const head=items.map(({p})=>{
+      const title=cleanName(p.group_name||p.name);
+      const off=p.old_price&&p.old_price>p.price?Math.round((1-p.price/p.old_price)*100):0;
+      const buy=p.affiliate_url
+        ? `<a class="cmp-col-buy" href="${esc(p.affiliate_url)}" target="_blank" rel="nofollow sponsored">Vezi prețul</a>`
+        : `<span class="cmp-col-buy" style="background:#cbd5e1">Indisponibil</span>`;
+      return `<th scope="col"><div class="cmp-col">
+        <img class="cmp-col-img" src="${esc(p.image_url||"")}" alt="${esc(title)}" loading="lazy">
+        <div class="cmp-col-brand">${esc(p.brand||"")}</div>
+        <div class="cmp-col-name">${esc(title)}</div>
+        <div><span class="cmp-col-price">${money(p.price)}</span>${
+          off?`<span class="cmp-col-was"><span class="cmp-price-old">${money(p.old_price)}</span><span class="cmp-off">-${off}%</span></span>`:""}</div>
+        ${buy}
+        <button class="cmp-col-drop" data-drop="${p.id}" aria-label="Scoate ${esc(title)} din comparație">Scoate</button>
+      </div></th>`;
+    }).join("");
+    const body=rows.map(([label,fn])=>
+      `<tr><th class="rowlab" scope="row">${label}</th>`+
+      items.map(({p})=>{const v=fn(p.attributes||{});
+        return `<td>${v?esc(v):'<span class="cmp-na">—</span>'}</td>`;}).join("")+
+      `</tr>`).join("");
+    const priceRow=`<tr><th class="rowlab" scope="row">Preț</th>`+items.map(({p})=>{
+        const off=p.old_price&&p.old_price>p.price?Math.round((1-p.price/p.old_price)*100):0;
+        return `<td><strong>${money(p.price)}</strong>${off?`<span class="cmp-off">-${off}%</span>`:""}</td>`;
+      }).join("")+`</tr>`;
+    $("cmpscroll").innerHTML=`<table class="cmp-table"><thead><tr><th class="rowlab"></th>${head}</tr></thead>`+
+      `<tbody>${body}${priceRow}</tbody></table>`;
+  }
+  function cmpOpen(){
+    if(cmpSel.size<2) return;
+    cmpBuild();
+    cmpLastFocus=document.activeElement;
+    $("cmpoverlay").hidden=false;
+    document.body.style.overflow="hidden";   // the panel scrolls, the page does not
+    $("cmpclose").focus();
+  }
+  function cmpClose(){
+    $("cmpoverlay").hidden=true;
+    document.body.style.overflow="";
+    if(cmpLastFocus&&cmpLastFocus.focus) cmpLastFocus.focus();
+  }
 
   function render(list){
     const box=$("results"); box.innerHTML="";
+    lastById=new Map(list.map(p=>[p.id,p]));
     for(const p of list){
       const a=p.attributes||{};
       const off=p.old_price? Math.round((1-p.price/p.old_price)*100):0;
@@ -257,7 +489,7 @@
         ? `<div class="colors">Culori: ${colorsText(p.colors)}</div>` : "";
       box.insertAdjacentHTML("beforeend",`
         <article class="card">
-          <div class="thumb">${save}<img src="${p.image_url||''}" alt="${title}" loading="lazy"></div>
+          <div class="thumb">${save}<label class="cmp-check"><input type="checkbox" data-cmp="${p.id}"${cmpSel.has(p.id)?" checked":""}>Compară</label><img src="${p.image_url||''}" alt="${esc(title)}" loading="lazy"></div>
           <div class="body">
             <div class="brand">${p.brand||''}</div>
             <h3 class="name">${title}</h3>
@@ -312,6 +544,8 @@
 
   async function search(){
     const text=$("q").value.trim();
+    // a new question starts a new shortlist; changing only the sort keeps it
+    if(text!==lastQuery) cmpClear();
     $("go").disabled=true;
     $("understood").style.display="none";
     $("results").innerHTML="";
@@ -340,6 +574,42 @@
       $("go").disabled=false;
     }
   }
+
+  // --- comparison wiring ---
+  $("results").addEventListener("change",e=>{
+    const cb=e.target.closest("input[data-cmp]"); if(!cb) return;
+    const id=Number(cb.dataset.cmp);
+    if(cb.checked){
+      if(cmpSel.size>=CMP_MAX){
+        cb.checked=false;
+        cmpMsg("Poți compara cel mult "+CMP_MAX+" produse. Scoate unul ca să adaugi altul.");
+        return;
+      }
+      const p=lastById.get(id); if(!p) return;
+      cmpSel.set(id,{p,cat:(lastUnderstood&&lastUnderstood.category)||null});
+    }else{
+      cmpSel.delete(id);
+    }
+    cmpSync();
+  });
+  $("cmpopen").addEventListener("click",cmpOpen);
+  $("cmpclear").addEventListener("click",cmpClear);
+  $("cmpclose").addEventListener("click",cmpClose);
+  $("cmpoverlay").addEventListener("click",e=>{ if(e.target===$("cmpoverlay")) cmpClose(); });
+  $("cmpscroll").addEventListener("click",e=>{
+    const b=e.target.closest("button[data-drop]"); if(b) cmpDrop(Number(b.dataset.drop));
+  });
+  document.addEventListener("keydown",e=>{
+    if($("cmpoverlay").hidden) return;
+    if(e.key==="Escape"){ cmpClose(); return; }
+    if(e.key!=="Tab") return;
+    // keep focus inside the dialog while it is open
+    const f=$("cmppanel").querySelectorAll('button, a[href], input, [tabindex]:not([tabindex="-1"])');
+    if(!f.length) return;
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  });
 
   $("q").addEventListener("input", (e)=>autoGrow(e.target));
   $("go").addEventListener("click",search);
