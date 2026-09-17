@@ -521,6 +521,7 @@
     if(u.max_price) t.push("sub "+money(u.max_price));
     if(u.age_months!=null) t.push(u.age_months===0?"de la naștere":"bebe "+u.age_months+" luni");
     if(u.max_weight_kg) t.push("ușor (sub "+u.max_weight_kg+" kg)");
+    if(u.color) t.push(u.color);
     if(u.wheel_size_in) t.push('roți de '+u.wheel_size_in+'"');
     if(u.parent_handle) t.push("cu mâner pentru părinte");
     if(u.easy_fold) t.push("pliere ușoară");
