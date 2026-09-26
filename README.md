@@ -41,3 +41,31 @@ records Vercel shows at your domain registrar.
   for MVP; tighten to the real domain later).
 - Product titles from the feed are cleaned for display in `cleanName()`.
 - The "Recomandate" / "Preț" toggle sends `sort` to `/ask`.
+
+## Guide figures
+
+Guides in `ghiduri/` can carry figures. Each guide keeps its CSS inline, so a
+guide that uses figures has the `.fig` rules in its `<style>` (copy them from
+`ghiduri/cum-alegi-scaun-auto`). Images live in `ghiduri/img/`.
+
+    <!-- one image -->
+    <figure class="fig"><img src="/ghiduri/img/x.svg" width="640" height="320"
+      alt="What the image shows, in context" loading="lazy" decoding="async">
+      <figcaption>What to look at and why it matters.
+      <small>Ilustrație schematică: sfatbebe.ro</small></figcaption></figure>
+
+    <!-- side-by-side comparison; stacks under 560px -->
+    <figure class="fig"><div class="fig-pair">
+      <div><img ... width="400" height="300"><span>Label A</span></div>
+      <div><img ... width="400" height="300"><span>Label B</span></div>
+    </div><figcaption>... <small>source</small></figcaption></figure>
+
+- Always set `width`/`height` to the image's intrinsic size (no layout shift).
+- The first figure of a page loads eagerly (no `loading`); later ones get `loading="lazy"`.
+- A featured image is just a first figure placed right after the lead; optional.
+- `<small>` carries the source. For an external image, write author, licence and
+  a link to the original, e.g. `Foto: Nume, CC BY-SA 4.0 (Wikimedia Commons)`.
+- Current figures are original schematic SVGs: 640 wide for a full-width figure,
+  400x300 for each half of a pair, text at least ~20px in the viewBox so it stays
+  readable on a phone. Palette: the site's `:root` colours.
+- Only add a figure when it explains something the text can't; otherwise stay text-only.

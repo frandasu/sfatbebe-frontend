@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" width="640" height="180">
+<style>text{font-family:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;fill:#26231F;font-size:23px}.b{font-weight:600}.m{fill:#7C746A;font-size:22px}</style>
+<rect width="640" height="180" fill="#FFFFFF"/>
+<!-- stroller weight bands; the last one stays open-ended -->
+<g text-anchor="middle" class="b"><text x="100" y="50" class="b">ultraușor</text><text x="220" y="50" class="b">ușor</text><text x="360" y="50" class="b">mediu</text><text x="520" y="50" class="b">greu de cărat</text></g>
+<path d="M54 66H160V114H54A14 14 0 0 1 40 100V80A14 14 0 0 1 54 66Z" fill="#2E6F79"/>
+<rect x="162" y="66" width="116" height="48" fill="#8FA996"/>
+<rect x="280" y="66" width="158" height="48" fill="#E0B27A"/>
+<path d="M440 66H586A14 14 0 0 1 600 80V100A14 14 0 0 1 586 114H440Z" fill="#B45B3F"/>
+<g text-anchor="middle" class="m"><text x="161" y="146" class="m">6,5 kg</text><text x="279" y="146" class="m">8 kg</text><text x="439" y="146" class="m">10 kg</text></g>
+<g stroke="#7C746A" stroke-width="2"><line x1="161" y1="116" x2="161" y2="126"/><line x1="279" y1="116" x2="279" y2="126"/><line x1="439" y1="116" x2="439" y2="126"/></g>
+</svg>

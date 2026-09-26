@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+<style>text{font-family:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;fill:#7C746A;font-size:19px}.k{fill:#26231F;font-weight:600}</style>
+<rect width="400" height="300" fill="#FFFFFF"/>
+<!-- direction of travel -->
+<text x="238" y="38" text-anchor="end">sensul de mers</text>
+<line x1="250" y1="32" x2="352" y2="32" stroke="#7C746A" stroke-width="3"/><path d="M362 32l-14-8v16z" fill="#7C746A"/>
+<!-- rear bench of the car, shifted right to leave room behind the backrest -->
+<rect x="98" y="46" width="34" height="22" rx="7" fill="#E7E0D5"/>
+<path d="M106 86h30l14 132H120z" fill="#E7E0D5"/>
+<rect x="120" y="214" width="240" height="34" rx="10" fill="#E7E0D5"/>
+<line x1="20" y1="284" x2="380" y2="284" stroke="#E7E0D5" stroke-width="3"/>
+<!-- forward-facing seat, faded -->
+<path d="M150 56l16 128h96" fill="none" stroke="#2E6F79" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+<rect x="158" y="196" width="112" height="18" rx="5" fill="#245861"/>
+<!-- ISOFIX arm into the anchor at the seat bight -->
+<line x1="162" y1="208" x2="144" y2="212" stroke="#245861" stroke-width="8" stroke-linecap="round"/>
+<rect x="134" y="206" width="14" height="12" rx="3" fill="#B45B3F"/>
+<!-- top tether: from the top of the seat, under the headrest and over the backrest, to the anchor on the back of the bench -->
+<path d="M152 62Q146 83 128 83H108L111 156" fill="none" stroke="#245861" stroke-width="5" stroke-linecap="round"/>
+<rect x="103" y="154" width="16" height="12" rx="3" fill="#B45B3F"/>
+<!-- labels -->
+<line x1="141" y1="224" x2="141" y2="254" stroke="#7C746A" stroke-width="1.5"/>
+<text x="141" y="276" text-anchor="middle" class="k">ISOFIX</text>
+<text x="96" y="166" text-anchor="end" class="k">top tether</text>
+</svg>

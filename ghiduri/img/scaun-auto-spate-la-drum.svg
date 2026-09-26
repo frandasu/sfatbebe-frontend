@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+<style>text{font-family:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;fill:#7C746A;font-size:19px}</style>
+<rect width="400" height="300" fill="#FFFFFF"/>
+<!-- direction of travel -->
+<text x="238" y="38" text-anchor="end">sensul de mers</text>
+<line x1="250" y1="32" x2="352" y2="32" stroke="#7C746A" stroke-width="3"/><path d="M362 32l-14-8v16z" fill="#7C746A"/>
+<!-- rear bench of the car: backrest on the left (rear), cushion to the right -->
+<rect x="58" y="58" width="34" height="22" rx="7" fill="#E7E0D5"/>
+<path d="M66 86h30l14 132H80z" fill="#E7E0D5"/>
+<rect x="80" y="214" width="260" height="34" rx="10" fill="#E7E0D5"/>
+<line x1="20" y1="284" x2="380" y2="284" stroke="#E7E0D5" stroke-width="3"/>
+<!-- seat: base and reclined shell, back of the shell toward the front of the car -->
+<rect x="140" y="196" width="170" height="18" rx="5" fill="#245861"/>
+<path d="M148 184h62l108-112" fill="none" stroke="#2E6F79" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- child, facing the rear of the car -->
+<g stroke="#B45B3F" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<path d="M204 168l50-52"/><path d="M204 168l-32-36-26 16"/>
+</g>
+<circle cx="272" cy="93" r="17" fill="#B45B3F"/>
+</svg>

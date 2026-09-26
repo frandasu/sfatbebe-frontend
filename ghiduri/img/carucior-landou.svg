@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+<style>text{font-family:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;fill:#26231F;font-size:21px}.b{font-weight:600}.m{fill:#7C746A;font-size:18px}</style>
+<rect width="400" height="300" fill="#FFFFFF"/>
+<!-- chassis: handle, legs, wheels, basket -->
+<path d="M146 222H250L240 238H156Z" fill="#E7E0D5"/>
+<g stroke="#26231F" stroke-width="7" stroke-linecap="round" fill="none"><path d="M52 72L160 200"/><path d="M160 200L96 246"/><path d="M160 200L294 252"/></g>
+<path d="M40 66L60 76" stroke="#26231F" stroke-width="12" stroke-linecap="round"/>
+<circle cx="96" cy="248" r="26" fill="none" stroke="#26231F" stroke-width="8"/><circle cx="296" cy="254" r="19" fill="none" stroke="#26231F" stroke-width="7"/>
+<line x1="10" y1="282" x2="390" y2="282" stroke="#E7E0D5" stroke-width="3"/>
+<!-- carrycot on the chassis; the orange line is the flat surface the baby lies on -->
+<path d="M130 126H334V158Q334 190 302 190H162Q130 190 130 158Z" fill="#2E6F79"/>
+<path d="M126 130C126 76 170 58 228 62L234 130Z" fill="#245861"/>
+<line x1="144" y1="148" x2="320" y2="148" stroke="#F4A261" stroke-width="7" stroke-linecap="round"/>
+</svg>
